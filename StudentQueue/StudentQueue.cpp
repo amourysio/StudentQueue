@@ -1,5 +1,9 @@
 #include "StudentQueue.h"
 
+void StudentQueue::Student::Print()
+{
+	std::cout << "[" << name << "] " << waitingTime << "m  [" << groupNumber << "]" << std::endl;
+}
 
 void StudentQueue::Free()
 {
@@ -13,7 +17,6 @@ void StudentQueue::Free()
 	head = tail = nullptr;
 }
 
-
 void StudentQueue::CopyFrom(const StudentQueue& other)
 {
 	Student* iter = other.head;
@@ -24,19 +27,20 @@ void StudentQueue::CopyFrom(const StudentQueue& other)
 	}
 }
 
-
 bool StudentQueue::IsEmpty() const
 {
-	return head == nullptr;
-}
+	if (head == NULL && tail == NULL)
+		return true;
+	else
+		return false;
 
+}
 
 StudentQueue::StudentQueue()
 {
 	head = nullptr;
 	tail = nullptr;
 }
-
 
 StudentQueue::StudentQueue(const StudentQueue& other)
 {
@@ -74,45 +78,22 @@ void StudentQueue::Enqueue(Student* student)
 }
 
 
-StudentQueue::Student* StudentQueue::Dequeue()
+void StudentQueue::Dequeue()
 {
 	if (IsEmpty())
 	{
 		throw std::runtime_error("The Queue is Empty!");
 	}
-	else if (head == tail)
-	{
-		Student* element = head;
-		delete head;
 
-		head = nullptr;
-		tail = nullptr;
+	Student* temp = head;
+	head = head->next;
+	if (head == NULL)
+		tail = NULL;
 
-		return element;
-	}
-	else
-	{
-		Student* element = head;
-		Student* temp = head->next;
-
-		delete head;
-
-		head = temp;
-		return element;
-	}
-
+	delete (temp);
 }
 
-void StudentQueue::Print(Student* newStudent)
-{
-	newStudent = head;
-	std::cout << "-----------At the Queue Is --------\n";
-	while (newStudent != NULL)
-	{
-		std::cout << "[" << newStudent->name << "] " << newStudent->waitingTime << "m  [" << newStudent->groupNumber << "]" << std::endl;
-		newStudent = newStudent->next;
-	}
-}
+
 std::string StudentQueue::Peek()
 {
 	if (IsEmpty())
@@ -150,10 +131,19 @@ void StudentQueue::AddInQueue(std::ifstream& file)
 		WaitingTime();
 		if (count % 2 == 0)
 		{
+			head->Print();
 			Dequeue();
 		}
-		Print(newStudent);
-
+	}
+	while (head != nullptr)
+	{
+		count++;
+		WaitingTime();
+		if (count % 2 == 0)
+		{
+			head->Print();
+			Dequeue();
+		}
 	}
 }
 bool StudentQueue::TryToFindFriend(std::string name, unsigned int groupNumber)

@@ -18,8 +18,8 @@ class StudentQueue
 			this->groupNumber = groupNumber;
 			this->waitingTime = 0;
 			next = nullptr;
-		}
-
+		};
+		void Print();
 	};
 	Student* head;
 	Student* tail;
@@ -35,13 +35,12 @@ public:
 	StudentQueue operator=(const StudentQueue& other);
 	~StudentQueue();
 
-	void Print(Student* head);
 	void Enqueue(Student* student);
-	Student* Dequeue();
+	void Dequeue();
 	std::string Peek();
 	void AddInQueue(std::ifstream& file);
 	void WaitingTime();
 	bool TryToFindFriend(std::string name, unsigned int groupNumber);
 	void InsertAfter(Student* head, std::string name, unsigned int groupNumber);
 
-}; 
+};
